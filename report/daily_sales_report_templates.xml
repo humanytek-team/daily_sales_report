@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <template id="report_sales">
+            <t t-call="report.html_container">
+                <t
+                    t-call="daily_sales_report.report_sales_document"
+                    t-lang="user.partner_id.lang"/>
+            </t>
+        </template>
+
+        <!-- Translatable template -->
+        <template id="report_sales_document">
+            <t t-set="docs" t-value="docs.with_context({'lang':user.partner_id.lang})" />
+            <t t-call="report.external_layout">
+
+                <div class="page">
+                    <div class="oe_structure"/>
+
+                    <div class="row">
+                        <strong>Warehouse:</strong>
+                        <span t-field="docs[0].warehouse_id.name" />
+
+                        <strong>User:</strong>
+                        <span t-field="user.name" />
+                    </div>
+
+                    <div class="row">
+                        <strong>Total sales of the day:</strong>
+                        <span t-esc="data['sales_total']" />
+                    </div>
+
+                    <div class="row">
+                        <strong>Total payments:</strong>
+                        <span t-esc="data['payments_done_total']" />
+                    </div>
+
+                    <div class="oe_structure"/>
+
+                    <t t-foreach="docs" t-as="sale_order">
+                        <p>
+                            This object's name is
+                            <span t-field="sale_order.name"/>
+                        </p>
+                    </t>
+                </div>
+
+            </t>
+        </template>
+
+    </data>
+</odoo>

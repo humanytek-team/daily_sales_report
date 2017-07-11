@@ -20,23 +20,4 @@
 #
 ###############################################################################
 
-{
-    'name': "daily_sales_report",
-    'summary': """Adds a PDF report of sales daily.""",
-    'description': """
-        Adds a PDF report of sales daily. You should indicate the day and the
-        warehouse through a wizard.
-    """,
-    'author': "Humanytek",
-    'website': "http://www.humanytek.com",
-    'category': 'Sales',
-    'version': '0.1.0',
-    'depends': ['sale'],
-    'data': [
-        'report/daily_sales_report_templates.xml',
-        'report/daily_sales_report.xml',
-        'wizard/daily_sales_report_view.xml',
-    ],
-    'demo': [
-    ],
-}
+from . import daily_sales_report

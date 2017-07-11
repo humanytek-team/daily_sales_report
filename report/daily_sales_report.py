@@ -20,23 +20,28 @@
 #
 ###############################################################################
 
-{
-    'name': "daily_sales_report",
-    'summary': """Adds a PDF report of sales daily.""",
-    'description': """
-        Adds a PDF report of sales daily. You should indicate the day and the
-        warehouse through a wizard.
-    """,
-    'author': "Humanytek",
-    'website': "http://www.humanytek.com",
-    'category': 'Sales',
-    'version': '0.1.0',
-    'depends': ['sale'],
-    'data': [
-        'report/daily_sales_report_templates.xml',
-        'report/daily_sales_report.xml',
-        'wizard/daily_sales_report_view.xml',
-    ],
-    'demo': [
-    ],
-}
+import logging
+
+from odoo import api, models
+
+_logger = logging.getLogger(__name__)
+
+
+class DailySalesReport(models.AbstractModel):
+    _name = 'report.daily_sales_report.report_sales'
+
+    @api.model
+    def render_html(self, docids, data=None):
+        Report = self.env['report']
+        SaleOrder = self.env['sale.order']
+        report = Report._get_report_from_name(
+            'daily_sales_report.report_sales')
+        docs = SaleOrder.browse(docids)
+        docargs = {
+            'doc_ids': docids,
+            'doc_model': report.model,
+            'docs': docs,
+            'data': data['extra_data'],
+        }
+
+        return Report.render('daily_sales_report.report_sales', docargs)
