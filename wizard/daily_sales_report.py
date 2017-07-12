@@ -56,17 +56,63 @@ class DailySalesReport(models.TransientModel):
             data = dict()
             data['ids'] = sale_orders.mapped('id')
             extra_data = dict()
-            extra_data['sales_total'] = sum(sale_orders.mapped('amount_total'))
 
-            payments_done = sale_orders.mapped('invoice_ids').filtered(
+            sale_orders_invoices = sale_orders.mapped('invoice_ids').filtered(
                 lambda inv: inv.type == 'out_invoice' and
-                inv.date_invoice == wizard_data['date']).mapped(
+                inv.date_invoice == wizard_data['date']
+            )
+
+            extra_data['sales_total'] = sum(
+                sale_orders_invoices.mapped('amount_total'))
+
+            payments_done = sale_orders_invoices.mapped(
                     'payment_ids').filtered(
                         lambda pay: pay.payment_type == 'inbound' and
                         pay.payment_date == wizard_data['date']
                     )
             payments_done_total = sum(payments_done.mapped('amount'))
             extra_data['payments_done_total'] = payments_done_total
+
+            pay_methods = sale_orders_invoices.mapped('pay_method_ids')
+            pay_methods_ids = [
+                str(pay_method_id) for pay_method_id
+                in pay_methods.mapped('id')]
+            extra_data['pay_methods_ids'] = pay_methods_ids
+
+            total_invoices_by_pay_method_id = dict()
+            for pay_method in pay_methods:
+                total_invoices_by_pay_method_id[pay_method.id] = \
+                    sum(sale_orders_invoices.filtered(
+                        lambda inv: pay_method in inv.pay_method_ids).mapped(
+                            'amount_total'))
+
+            extra_data['total_invoices_by_pay_method_id'] = \
+                total_invoices_by_pay_method_id
+
+            pay_methods_names_by_id = {
+                str(pay_method.id): pay_method.name
+                for pay_method in pay_methods}
+            extra_data['pay_methods_names_by_id'] = pay_methods_names_by_id
+
+            invoices_by_pay_method_id = dict()
+            for pay_method_id in pay_methods_ids:
+                invoices_by_pay_method_id[pay_method_id] = list()
+                sale_orders_invoices_by_pay_method = \
+                    sale_orders_invoices.filtered(
+                        lambda inv: int(pay_method_id) in
+                        inv.pay_method_ids.mapped('id'))
+
+                for sale_order_invoice in sale_orders_invoices_by_pay_method:
+                    customer_name = \
+                        sale_order_invoice.partner_id.name.upper()
+                    invoices_by_pay_method_id[pay_method_id].append(
+                        {
+                            'move_name': sale_order_invoice.move_name,
+                            'customer': customer_name,
+                            'amount_total': sale_order_invoice.amount_total,
+                        }
+                    )
+            extra_data['invoices_by_pay_method_id'] = invoices_by_pay_method_id
 
             data['extra_data'] = extra_data
 

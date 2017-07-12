@@ -15,9 +15,17 @@
             <t t-set="docs" t-value="docs.with_context({'lang':user.partner_id.lang})" />
             <t t-call="report.external_layout">
 
-                <div class="page">
-                    <div class="oe_structure"/>
+                <div class="page" style="font-size:16px;">
 
+
+                    <div class="row text-right">
+                        <strong>Generated:</strong>
+                        <span t-esc="data['datetime']" />
+                    </div>
+
+                    <div class="row">
+
+                    <div class="col-xs-8">
                     <div class="row">
                         <strong>Warehouse:</strong>
                         <span t-field="docs[0].warehouse_id.name" />
@@ -36,14 +44,87 @@
                         <span t-esc="data['payments_done_total']" />
                     </div>
 
-                    <div class="oe_structure"/>
+                    <div class="row">
+                        <strong>Date:</strong>
+                        <span t-esc="data['date']" />
+                    </div>
+                    </div>
 
-                    <t t-foreach="docs" t-as="sale_order">
-                        <p>
-                            This object's name is
-                            <span t-field="sale_order.name"/>
-                        </p>
-                    </t>
+                    <div class="col-xs-4 mt32 mb32">
+                    <div
+                        class="row"
+                        t-foreach="data['pay_methods_ids']"
+                        t-as="pay_method_id">
+
+                        Total
+                        <span
+                            t-esc="data['pay_methods_names_by_id'][pay_method_id]" />:
+                        <span
+                            t-esc="data['total_invoices_by_pay_method_id'][pay_method_id]" />
+
+                    </div>
+                    </div>
+                    </div>
+
+                    <hr/>
+                    <h2>Breakdown of invoices by payment method</h2>
+                    <hr/>
+
+                    <div
+                        class="row mt32 mb32"
+                        t-foreach="data['pay_methods_ids']"
+                        t-as="pay_method_id">
+
+                        <div class="row">
+                            <div class="col-xs-11">
+                            <strong>
+                                <t t-esc="data['pay_methods_names_by_id'][pay_method_id]" />
+                            </strong>
+                        </div>
+                            <div class="col-xs-1">
+                            <span
+                                class="text-right"
+                                t-esc="data['total_invoices_by_pay_method_id'][pay_method_id]" />
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-xs-10 col-xs-offset-1">
+                            Total Invoices
+                            </div>
+                            <div class="col-xs-1">
+                            <span
+                                class="text-right"
+                                t-esc="data['total_invoices_by_pay_method_id'][pay_method_id]" />
+                            </div>
+                        </div>
+
+                        <div
+                            class="row"
+                            t-foreach="data['invoices_by_pay_method_id'][pay_method_id]"
+                            t-as="invoice">
+
+                            <div
+                                class="col-xs-3 col-xs-offset-1"
+                                style="padding-left:50px;">
+                            <span
+                                t-esc="invoice['move_name']" />
+                            </div>
+                            <div class="col-xs-4">
+                            <span
+                                t-esc="invoice['customer']" />
+                            </div>
+                            <div
+                                class="col-xs-4 text-right"
+                                style="padding-right:31px;">
+                            <span
+                                t-esc="invoice['amount_total']" />
+                            </div>
+
+                        </div>
+
+                    </div>
+
                 </div>
 
             </t>

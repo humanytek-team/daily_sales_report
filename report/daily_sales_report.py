@@ -20,6 +20,7 @@
 #
 ###############################################################################
 
+from datetime import datetime
 import logging
 
 from odoo import api, models
@@ -37,6 +38,12 @@ class DailySalesReport(models.AbstractModel):
         report = Report._get_report_from_name(
             'daily_sales_report.report_sales')
         docs = SaleOrder.browse(docids)
+        datetime_today = datetime.today()
+        data['extra_data'].update(
+            {
+                'datetime': datetime_today.strftime('%d/%m/%y %H:%M:%S'),
+                'date': datetime_today.strftime('%d/%m/%y'),
+            })
         docargs = {
             'doc_ids': docids,
             'doc_model': report.model,

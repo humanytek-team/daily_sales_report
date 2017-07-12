@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 10.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-07-10 16:57+0000\n"
-"PO-Revision-Date: 2017-07-10 12:59-0400\n"
+"POT-Creation-Date: 2017-07-12 21:10+0000\n"
+"PO-Revision-Date: 2017-07-12 17:13-0400\n"
 "Last-Translator: Manuel Marquez <buzondemam@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -19,6 +19,26 @@ msgstr ""
 
 #. module: daily_sales_report
 #: model:ir.ui.view,arch_db:daily_sales_report.report_sales_document
+msgid "<strong>Date:</strong>"
+msgstr "<strong>Fecha:</strong>"
+
+#. module: daily_sales_report
+#: model:ir.ui.view,arch_db:daily_sales_report.report_sales_document
+msgid "<strong>Generated:</strong>"
+msgstr "<strong>Generado:</strong>"
+
+#. module: daily_sales_report
+#: model:ir.ui.view,arch_db:daily_sales_report.report_sales_document
+msgid "<strong>Total payments:</strong>"
+msgstr "<strong>Total de recepciones de pago:</strong>"
+
+#. module: daily_sales_report
+#: model:ir.ui.view,arch_db:daily_sales_report.report_sales_document
+msgid "<strong>Total sales of the day:</strong>"
+msgstr "<strong>Total de ventas del dia:</strong>"
+
+#. module: daily_sales_report
+#: model:ir.ui.view,arch_db:daily_sales_report.report_sales_document
 msgid "<strong>User:</strong>"
 msgstr "<strong>Usuario:</strong>"
 
@@ -26,6 +46,11 @@ msgstr "<strong>Usuario:</strong>"
 #: model:ir.ui.view,arch_db:daily_sales_report.report_sales_document
 msgid "<strong>Warehouse:</strong>"
 msgstr "<strong>Almacén:</strong>"
+
+#. module: daily_sales_report
+#: model:ir.ui.view,arch_db:daily_sales_report.report_sales_document
+msgid "Breakdown of invoices by payment method"
+msgstr "Desglose de Facturas por Método de Pago"
 
 #. module: daily_sales_report
 #: model:ir.ui.view,arch_db:daily_sales_report.daily_sales_report_view
@@ -61,16 +86,19 @@ msgstr "Fecha"
 
 #. module: daily_sales_report
 #: model:ir.model.fields,field_description:daily_sales_report.field_daily_sales_report_display_name
+#: model:ir.model.fields,field_description:daily_sales_report.field_report_daily_sales_report_report_sales_display_name
 msgid "Display Name"
 msgstr "Nombre a mostrar"
 
 #. module: daily_sales_report
 #: model:ir.model.fields,field_description:daily_sales_report.field_daily_sales_report_id
+#: model:ir.model.fields,field_description:daily_sales_report.field_report_daily_sales_report_report_sales_id
 msgid "ID"
 msgstr "ID"
 
 #. module: daily_sales_report
 #: model:ir.model.fields,field_description:daily_sales_report.field_daily_sales_report___last_update
+#: model:ir.model.fields,field_description:daily_sales_report.field_report_daily_sales_report_report_sales___last_update
 msgid "Last Modified on"
 msgstr "Última modificación en"
 
@@ -85,7 +113,7 @@ msgid "Last Updated on"
 msgstr "Última actualización el"
 
 #. module: daily_sales_report
-#: code:addons/daily_sales_report/wizard/daily_sales_report.py:63
+#: code:addons/daily_sales_report/wizard/daily_sales_report.py:126
 #, python-format
 msgid "No sales for the warehouse and day selected"
 msgstr "No hay ventas para el almacén y dia seleccionado."
@@ -102,8 +130,13 @@ msgstr "Opciones del informe"
 
 #. module: daily_sales_report
 #: model:ir.ui.view,arch_db:daily_sales_report.report_sales_document
-msgid "This object's name is"
-msgstr "This object's name is"
+msgid "Total"
+msgstr "Total"
+
+#. module: daily_sales_report
+#: model:ir.ui.view,arch_db:daily_sales_report.report_sales_document
+msgid "Total Invoices"
+msgstr "Total Facturas"
 
 #. module: daily_sales_report
 #: model:ir.model.fields,field_description:daily_sales_report.field_daily_sales_report_warehouse_id
@@ -114,3 +147,8 @@ msgstr "Almacén"
 #: model:ir.ui.view,arch_db:daily_sales_report.daily_sales_report_view
 msgid "or"
 msgstr "ó"
+
+#. module: daily_sales_report
+#: model:ir.model,name:daily_sales_report.model_report_daily_sales_report_report_sales
+msgid "report.daily_sales_report.report_sales"
+msgstr "report.daily_sales_report.report_sales"
