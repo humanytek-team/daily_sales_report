@@ -62,8 +62,9 @@ class DailySalesReport(models.TransientModel):
                 inv.date_invoice == wizard_data['date']
             )
 
-            extra_data['sales_total'] = sum(
+            sales_total = sum(
                 sale_orders_invoices.mapped('amount_total'))
+            extra_data['sales_total'] = sales_total
 
             payments_done = sale_orders_invoices.mapped(
                     'payment_ids').filtered(
@@ -113,6 +114,58 @@ class DailySalesReport(models.TransientModel):
                         }
                     )
             extra_data['invoices_by_pay_method_id'] = invoices_by_pay_method_id
+
+            sale_orders_invoices_with_credit = sale_orders_invoices.filtered(
+                lambda inv: inv.date_due > inv.date_invoice
+            )
+
+            credit_total = sum(
+                sale_orders_invoices_with_credit.mapped('amount_total'))
+            extra_data['credit_total'] = credit_total
+
+            total_invoices_credit_by_pay_method_id = dict()
+            for pay_method in pay_methods:
+                total_invoices_credit_by_pay_method_id[pay_method.id] = \
+                    sum(sale_orders_invoices_with_credit.filtered(
+                        lambda inv: pay_method in inv.pay_method_ids).mapped(
+                            'amount_total'))
+            extra_data['total_invoices_credit_by_pay_method_id'] = \
+                total_invoices_credit_by_pay_method_id
+
+            sale_orders_invoices_out_refund = sale_orders \
+                .mapped('invoice_ids') \
+                .filtered(
+                    lambda inv: inv.type == 'out_refund' and
+                    inv.date_invoice == wizard_data['date']
+                    )
+            total_customer_refund = sum(
+                sale_orders_invoices_out_refund.mapped('amount_total')
+            )
+            extra_data['total_customer_refund'] = total_customer_refund
+
+            sales_total_minus_customer_refund = sales_total - \
+                total_customer_refund
+            extra_data['sales_total_minus_customer_refund'] = \
+                sales_total_minus_customer_refund
+
+            count_sale_orders_invoices = len(sale_orders_invoices)
+            count_sale_orders_invoices_out_refund = len(
+                sale_orders_invoices_out_refund)
+            count_total_sale_orders_invoices = count_sale_orders_invoices + \
+                count_sale_orders_invoices_out_refund
+            extra_data['count_sale_orders_invoices_out_refund'] = \
+                count_sale_orders_invoices_out_refund
+            extra_data['count_total_sale_orders_invoices'] = \
+                count_total_sale_orders_invoices
+
+            count_total_invoices_by_pay_method_id = dict()
+            for pay_method in pay_methods:
+                count_total_invoices_by_pay_method_id[pay_method.id] = \
+                    len(sale_orders_invoices.filtered(
+                        lambda inv: pay_method in inv.pay_method_ids))
+
+            extra_data['count_total_invoices_by_pay_method_id'] = \
+                count_total_invoices_by_pay_method_id
 
             data['extra_data'] = extra_data
 
