@@ -18,12 +18,16 @@
                 <div class="page" style="font-size:16px;">
 
 
-                    <div class="row text-right">
+                    <div
+                        class="row text-right"
+                        style="padding-right: 35px;">
                         <strong>Generated:</strong>
                         <span t-esc="data['datetime']" />
                     </div>
 
-                    <div class="row">
+                    <div
+                        class="row table table-condensed"
+                        style="font-size: 14px; background-color: #DDDDDD;text-shadow: 1px 1px 1px #888888;border: 1px solid #ddd;border-collapse: collapse;padding: 5px;">
 
                     <div class="col-xs-7">
                     <div class="row">
@@ -51,9 +55,10 @@
                         <span t-esc="data['date']" />
                     </div>
 
-                    <hr />
-                    <div class="row">
-                        <div class="col-xs-3">
+                    <div
+                        class="row"
+                        style="margin-top: 10px;">
+                        <div class="col-xs-4">
                             <strong>
                             Invoices
                             <span class="badge">
@@ -66,7 +71,7 @@
                             <span t-esc="data['sales_total']" />
                         </div>
 
-                        <div class="col-xs-3 text-right">
+                        <div class="col-xs-2 text-right">
                             <span t-esc="data['total_customer_refund']" />
                         </div>
 
@@ -75,13 +80,15 @@
                         </div>
                     </div>
 
+                    <hr style="margin-top:0; margin-bottom:0;"/>
+
                     <div
                         class="row"
                         t-foreach="data['pay_methods_ids']"
                         t-as="pay_method_id"
                         style="font-size: 13px;">
 
-                        <div class="col-xs-3" style="padding-left:20px;">
+                        <div class="col-xs-4" style="padding-left:20px;">
                             <strong>
                             <span
                                 t-esc="data['pay_methods_names_by_id'][pay_method_id]" />
@@ -100,7 +107,7 @@
 
                     <div class="row" style="font-size: 13px;">
 
-                        <div class="col-xs-3" style="padding-left:20px;">
+                        <div class="col-xs-4" style="padding-left:20px;">
                             <strong>
                             Customer Refund
                             <span class="badge">
@@ -109,7 +116,7 @@
                             </strong>
                         </div>
 
-                        <div class="col-xs-3 col-xs-offset-3 text-right">
+                        <div class="col-xs-2 col-xs-offset-3 text-right">
                             <span
                                 t-esc="data['total_customer_refund']" />
                         </div>
@@ -123,7 +130,7 @@
                         class="row"
                         t-foreach="data['pay_methods_ids']"
                         t-as="pay_method_id"
-                        style="font-size: 14px;">
+                        style="font-size: 13px;">
 
                         <div class="col-xs-4">
                         <span
@@ -142,7 +149,7 @@
                     <hr style="margin-top:0; margin-bottom:0;"/>
                     <div
                         class="row"
-                        style="font-size: 14px;">
+                        style="font-size: 13px;">
                         <div class="col-xs-4">
                             Total Credit
                         </div>
@@ -152,7 +159,7 @@
                         </div>
                     </div>
 
-                    <div class="row" style="font-size: 14px;">
+                    <div class="row" style="font-size: 13px;">
                         <div class="col-xs-4">
                             Total Sales
                         </div>
