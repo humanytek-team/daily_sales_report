@@ -27,6 +27,15 @@ from odoo.exceptions import ValidationError
 
 _logger = logging.getLogger(__name__)
 
+INVOICE_STATES = {
+    'draft': _('Draft'),
+    'proforma': _('Pro-forma'),
+    'proforma2': _('Pro-forma'),
+    'open': _('Open'),
+    'paid': _('Paid'),
+    'cancel': _('Cancelled'),
+    }
+
 
 class DailySalesReport(models.TransientModel):
     _name = "daily.sales.report"
@@ -59,7 +68,8 @@ class DailySalesReport(models.TransientModel):
 
             sale_orders_invoices = sale_orders.mapped('invoice_ids').filtered(
                 lambda inv: inv.type == 'out_invoice' and
-                inv.date_invoice == wizard_data['date']
+                inv.date_invoice == wizard_data['date'] and
+                inv.state != 'cancel'
             )
 
             sales_total = sum(
@@ -111,6 +121,9 @@ class DailySalesReport(models.TransientModel):
                             'move_name': sale_order_invoice.move_name,
                             'customer': customer_name,
                             'amount_total': sale_order_invoice.amount_total,
+                            'state': sale_order_invoice.state,
+                            'state_label': INVOICE_STATES[
+                                sale_order_invoice.state],
                         }
                     )
             extra_data['invoices_by_pay_method_id'] = invoices_by_pay_method_id
@@ -166,6 +179,57 @@ class DailySalesReport(models.TransientModel):
 
             extra_data['count_total_invoices_by_pay_method_id'] = \
                 count_total_invoices_by_pay_method_id
+
+            sale_orders_invoices_cancelled = sale_orders.mapped('invoice_ids')\
+                .filtered(
+                    lambda inv: inv.type == 'out_invoice' and
+                    inv.date_invoice == wizard_data['date'] and
+                    inv.state == 'cancel'
+                    )
+
+            sale_orders_invoices_cancelled_data = list()
+
+            for invoice in sale_orders_invoices_cancelled:
+                invoice_data = dict()
+                invoice_data = {
+                    'move_name': invoice.move_name,
+                    'customer': invoice.partner_id.name,
+                }
+                if invoice.date_due > invoice.date_invoice:
+                    invoice_data.update({
+                        'credit': invoice.amount_total,
+                        'debit': ''
+                    })
+                else:
+                    invoice_data.update({
+                        'debit': invoice.amount_total,
+                        'credit': ''
+                    })
+                sale_orders_invoices_cancelled_data.append(
+                    invoice_data
+                )
+
+            extra_data['sale_orders_invoices_cancelled_data'] = \
+                sale_orders_invoices_cancelled_data
+
+            total_sale_orders_invoices_cancelled = \
+                sum(sale_orders_invoices_cancelled.mapped('amount_total'))
+            extra_data['total_sale_orders_invoices_cancelled'] = \
+                total_sale_orders_invoices_cancelled
+
+            total_invoices_cancelled_with_credit = \
+                sum(sale_orders_invoices_cancelled.filtered(
+                    lambda inv: inv.date_due > inv.date_invoice
+                    ).mapped('amount_total'))
+            extra_data['total_invoices_cancelled_with_credit'] = \
+                total_invoices_cancelled_with_credit
+
+            total_invoices_cancelled_no_credit = \
+                sum(sale_orders_invoices_cancelled.filtered(
+                    lambda inv: inv.date_due == inv.date_invoice
+                    ).mapped('amount_total'))
+            extra_data['total_invoices_cancelled_no_credit'] = \
+                total_invoices_cancelled_no_credit
 
             data['extra_data'] = extra_data
 

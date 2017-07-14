@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 10.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-07-13 07:34+0000\n"
-"PO-Revision-Date: 2017-07-13 03:36-0400\n"
+"POT-Creation-Date: 2017-07-14 21:18+0000\n"
+"PO-Revision-Date: 2017-07-14 17:21-0400\n"
 "Last-Translator: Manuel Marquez <buzondemam@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -58,6 +58,12 @@ msgid "Cancel"
 msgstr "Cancelar"
 
 #. module: daily_sales_report
+#: code:addons/daily_sales_report/wizard/daily_sales_report.py:36
+#, python-format
+msgid "Cancelled"
+msgstr "Cancelado"
+
+#. module: daily_sales_report
 #: model:ir.model.fields,field_description:daily_sales_report.field_daily_sales_report_create_uid
 msgid "Created by"
 msgstr "Creado por"
@@ -96,6 +102,12 @@ msgid "Display Name"
 msgstr "Nombre a mostrar"
 
 #. module: daily_sales_report
+#: code:addons/daily_sales_report/wizard/daily_sales_report.py:31
+#, python-format
+msgid "Draft"
+msgstr "Borrador"
+
+#. module: daily_sales_report
 #: model:ir.model.fields,field_description:daily_sales_report.field_daily_sales_report_id
 #: model:ir.model.fields,field_description:daily_sales_report.field_report_daily_sales_report_report_sales_id
 msgid "ID"
@@ -105,6 +117,11 @@ msgstr "ID"
 #: model:ir.ui.view,arch_db:daily_sales_report.report_sales_document
 msgid "Invoices"
 msgstr "Facturas"
+
+#. module: daily_sales_report
+#: model:ir.ui.view,arch_db:daily_sales_report.report_sales_document
+msgid "Invoices Cancelled"
+msgstr "Facturas Canceladas"
 
 #. module: daily_sales_report
 #: model:ir.model.fields,field_description:daily_sales_report.field_daily_sales_report___last_update
@@ -123,15 +140,34 @@ msgid "Last Updated on"
 msgstr "Última actualización el"
 
 #. module: daily_sales_report
-#: code:addons/daily_sales_report/wizard/daily_sales_report.py:179
+#: code:addons/daily_sales_report/wizard/daily_sales_report.py:243
 #, python-format
 msgid "No sales for the warehouse and day selected"
 msgstr "No hay ventas para el almacén y dia seleccionado."
 
 #. module: daily_sales_report
+#: code:addons/daily_sales_report/wizard/daily_sales_report.py:34
+#, python-format
+msgid "Open"
+msgstr "Abierto"
+
+#. module: daily_sales_report
+#: code:addons/daily_sales_report/wizard/daily_sales_report.py:35
+#, python-format
+msgid "Paid"
+msgstr "Pagado"
+
+#. module: daily_sales_report
 #: model:ir.ui.view,arch_db:daily_sales_report.daily_sales_report_view
 msgid "Print"
 msgstr "Imprimir"
+
+#. module: daily_sales_report
+#: code:addons/daily_sales_report/wizard/daily_sales_report.py:32
+#: code:addons/daily_sales_report/wizard/daily_sales_report.py:33
+#, python-format
+msgid "Pro-forma"
+msgstr "Pro-forma"
 
 #. module: daily_sales_report
 #: model:ir.ui.view,arch_db:daily_sales_report.daily_sales_report_view
